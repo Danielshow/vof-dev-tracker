@@ -1,0 +1,22 @@
+{
+  "name": "vof-dev-tracker",
+  "version": "1.0.0",
+  "description": "An application to track VOF dev output per sprint",
+  "main": "index.js",
+  "repository": "https://github.com/Danielshow/vof-dev-tracker.git",
+  "author": "Daniel Shotonwa <danielshotonwa53@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf dist && babel server/ --out-dir dist --exclude ./node_modules",
+    "start:dev": "nodemon --exec babel-node server/index.js",
+    "start": "yarn run build && node dist/index.js"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.4",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.10"
+  }
+}
