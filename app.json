@@ -1,0 +1,18 @@
+{
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+  },
+  "formation": {
+  },
+  "name": "vof-dev-tracker",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}
