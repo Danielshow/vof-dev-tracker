@@ -5,6 +5,6 @@ const app = express();
 
 app.use(express.static('public'));
 
-app.listen(3000 || process.env.PORT, () => {
-  console.log(`App listening on PORT ${3000 || process.env.PORT}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`App listening on PORT ${process.env.PORT || 3000}`);
 })
