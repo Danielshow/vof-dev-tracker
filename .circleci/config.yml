@@ -1,0 +1,50 @@
+version: 2
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test
+
+jobs:
+  test:
+    docker:
+      - image: circleci/node:latest
+      - image: circleci/postgres:9.6-alpine
+        environment:
+           POSTGRES_USER: circleci
+           POSTGRES_DB: vof_dev_test
+           POSTGRES_PASSWORD: ''
+    environment:
+      NODE_ENV: test
+      DB_USERNAME: circleci
+      DB_TEST_NAME: circleci
+      DB_PASSWORD: ''
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-deps-{{ checksum "package.json" }}
+      # create database
+      - run: psql -c 'create database vof_dev_test;' -U postgres 
+      # Install dependencies
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-deps-{{ checksum "package.json" }}
+      - run: yarn lint
+      - run: yarn danger ci
+      - run:
+          name: set up code climate reporter
+          command: | 
+              curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+              chmod +x ./cc-test-reporter
+              ./cc-test-reporter before-build
+      - run: yarn test
+      - run:
+          name: push code coverage result
+          command: |
+              - ./cc-test-reporter after-build --coverage-input-type clover --exit-code $? 
+
